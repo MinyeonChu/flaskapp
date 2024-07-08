@@ -25,6 +25,7 @@ echo 'testing the applicaiton...'
 stage("deploy") {
 steps {
 echo 'deploying the applicaiton...'
+echo "${env.GIT_BRANCH}”
 }
 }
 }
