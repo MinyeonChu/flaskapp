@@ -17,7 +17,7 @@ expression {
 env.GIT_BRANCH == 'origin/test' || env.GIT_BRANCH == ''
 }
 }
-Jenkins CI Pipeline 생성 실습 5
+  
 steps {
 echo 'testing the applicaiton...'
 }
