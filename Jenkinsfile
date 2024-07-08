@@ -5,13 +5,6 @@ pipeline {
       booleanParam(name: 'executeTests', defaultValue: true, description: '')
    }
    stages {
-      stage("init") {
-         steps {
-            script {
-               gv = load "script.groovy"
-            }
-         }
-      }
       stage("Checkout") {
          steps {
             checkout scm
@@ -19,37 +12,19 @@ pipeline {
       }
       stage("Build") {
          steps {
-            sh 'docker build -t flask-jenkins:v1.0.0 -t lask_jenkins:latest .'
-         }
-      }
-      stage("test") {
-         when {
-            expression {
-               params.executeTests
-            }
-         }
-         steps {
-            script {
-               gv.testApp()
-            }
+            sh 'docker-compose build web'
          }
       }
       stage("Tag and Push") {
          steps {
-            withCredentials([[$class: 'UsernamePasswordMultiBinding',
-            credentialsId: 'docker-hub', 
-            usernameVariable: 'DOCKER_USER_ID', 
-            passwordVariable: 'DOCKER_USER_PASSWORD'
-            ]]) {
-               sh "docker tag flask-jenkins:latest ${DOCKER_USER_ID}/jenkins-app:${BUILD_NUMBER}"
-               sh "docker login -u ${DOCKER_USER_ID} -p ${DOCKER_USER_PASSWORD}"
+              sh "docker tag jenkins-pipeline_web:latest ${DOCKER_USER_ID}/jenkins-app:${BUILD_NUMBER}"
+               sh "docker login -u ${DOCKER_USER_ID}-p ${DOCKER_USER_PASSWORD}"
                sh "docker push ${DOCKER_USER_ID}/jenkins-app:${BUILD_NUMBER}"
-            }
          }
       }
       stage("deploy") {
          steps {
-            echo 'deploying the applicaiton...'
+            sh "docker-compose up -d"
          }
       }
    }
