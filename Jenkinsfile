@@ -18,7 +18,7 @@ echo 'testing the applicaiton...'
 stage("deploy") {
 steps {
 echo 'deploying the applicaiton...'
-echo "${GIT_AUTHOR_NAME}"
+echo "${TAG_DATE}"
 }
 }
 }
