@@ -4,7 +4,9 @@ metadata:
   name: flaskpod
 spec:
   containers:
-  - name: flask
-    image: mminyeonn/flaskapp:v2.0.0
+  - name: flaskapp
+    image: mminyeonn/flaskapp:latest
     ports:
     - containerPort: 5000
+  imagePullSecrets:
+  - name: docker-pull-secret
